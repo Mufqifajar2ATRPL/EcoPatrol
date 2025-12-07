@@ -1,3 +1,4 @@
+import 'package:eco_patrol/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
@@ -49,7 +50,7 @@ class SettingsScreen extends ConsumerWidget {
                       builder: (context) => AlertDialog(
                         title: const Text('Tentang EcoPatrol'),
                         content: const Text(
-                          'Aplikasi pemantauan lingkungan dan sampah liar untuk membantu menjaga kebersihan kota.',
+                          'Aplikasi pemantauan lingkungan dan sampah liar untuk membantu menjaga kebersihan kampus.',
                         ),
                         actions: [
                           TextButton(
@@ -82,9 +83,13 @@ class SettingsScreen extends ConsumerWidget {
                             onPressed: () {
                               ref.read(authProvider.notifier).logout();
                               Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginScreen()),
+                              );
                             },
                             child: const Text(
-                              'Logout',
+                              'Ya',
                               style: TextStyle(color: Colors.red),
                             ),
                           ),
