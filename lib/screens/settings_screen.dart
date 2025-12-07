@@ -1,4 +1,3 @@
-import 'package:eco_patrol/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
@@ -64,6 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
+
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -80,16 +80,26 @@ class SettingsScreen extends ConsumerWidget {
                             child: const Text('Batal'),
                           ),
                           TextButton(
-                            onPressed: () {
-                              ref.read(authProvider.notifier).logout();
+                            onPressed: () async {
+                              // Tutup dialog dulu
                               Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => LoginScreen()),
-                              );
+
+                              // Logout - langsung redirect ke login oleh provider
+                              await ref.read(authProvider.notifier).logout();
+
+                              // Show snackbar (opsional, karena sudah pindah ke login)
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Berhasil logout'),
+                                    duration: Duration(seconds: 1),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
                             },
                             child: const Text(
-                              'Ya',
+                              'Logout',
                               style: TextStyle(color: Colors.red),
                             ),
                           ),
@@ -101,6 +111,7 @@ class SettingsScreen extends ConsumerWidget {
                   label: const Text('Logout'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red[700],
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
